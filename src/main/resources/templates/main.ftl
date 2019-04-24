@@ -6,16 +6,25 @@
 </head>
 <body>
     <div>
-        <form method="post" action="/add">
+        <form action="/logout" method="post">
+            <input type="hidden" name="_csrf" value="${_csrf.token}"/>
+            <button type="submit">Sign out</button>
+        </form>
+    </div>
+
+    <div>
+        <form action="/add" method="post">
             <input type="text" name="text" placeholder="Enter message"/>
             <input type="text" name="tag" placeholder="Enter tag"/>
+            <input type="hidden" name="_csrf" value="${_csrf.token}"/>
             <button type="submit">Save</button>
         </form>
     </div>
 
     <div>
-        <form method="get" action="/main">
+        <form action="/main" method="get">
             <input type="text" name="filter" value="${filter?ifExists}" placeholder="Filter tag"/>
+            <input type="hidden" name="_csrf" value="${_csrf.token}"/>
             <button type="submit">Search by tag</button>
         </form>
     </div>

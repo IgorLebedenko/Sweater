@@ -27,7 +27,11 @@ public class MessageService {
         return messages;
     }
 
-    public void save(Message message) {
+    public void save(String text, String tag) {
+        Message message = new Message();
+        message.setText(text);
+        message.setTag(tag);
+
         messageRepository.save(message);
     }
 
