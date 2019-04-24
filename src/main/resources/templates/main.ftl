@@ -36,6 +36,7 @@
                 <b>${message.id}</b>
                 <span>${message.text}</span>
                 <i>${message.tag}</i>
+                <strong>${(message.author.username)!"&lt;none&gt;"}</strong>
             </div>
         <#else>
             No messages(
