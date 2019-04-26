@@ -1,15 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title>Sweater</title>
-</head>
-<body>
+<#import "parts/common.ftl" as c>
+<#import "parts/login.ftl" as l>
+
+<@c.page>
     <div>
-        <form action="/logout" method="post">
-            <input type="hidden" name="_csrf" value="${_csrf.token}"/>
-            <button type="submit">Sign out</button>
-        </form>
+        <@l.logout/>
     </div>
 
     <div>
@@ -24,7 +18,6 @@
     <div>
         <form action="/main" method="get">
             <input type="text" name="filter" value="${filter?ifExists}" placeholder="Filter tag"/>
-            <input type="hidden" name="_csrf" value="${_csrf.token}"/>
             <button type="submit">Search by tag</button>
         </form>
     </div>
@@ -42,6 +35,4 @@
             No messages(
         </#list>
     </div>
-
-</body>
-</html>
+</@c.page>
