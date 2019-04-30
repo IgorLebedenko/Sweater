@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import sweater.model.Message;
 import sweater.model.User;
 import sweater.service.MessageService;
 
@@ -28,9 +29,9 @@ public class MessageController {
 
     @PostMapping("/add")
     public String add(@AuthenticationPrincipal User user,
-                      @RequestParam String text,
-                      @RequestParam String tag) {
-        messageService.save(user, text, tag);
+                      Message message) {
+        message.setAuthor(user);
+        messageService.save(message);
 
         return "redirect:/main";
     }

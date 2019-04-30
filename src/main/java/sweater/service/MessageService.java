@@ -28,12 +28,7 @@ public class MessageService {
         return messages;
     }
 
-    public void save(User user, String text, String tag) {
-        Message message = new Message();
-        message.setText(text);
-        message.setTag(tag);
-        message.setAuthor(user);
-
+    public void save(Message message) {
         messageRepository.save(message);
     }
 
