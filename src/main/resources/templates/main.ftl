@@ -1,36 +1,45 @@
 <#import "parts/common.ftl" as c>
-<#import "parts/login.ftl" as l>
 
 <@c.page>
-    <div>
-        <@l.logout/>
-        <span><a href="/users">List of users</a></span>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <form action="/main" method="get" class="form-inline">
+                <input class="form-control" type="text" name="filter" value="${filter?ifExists}" placeholder="Filter tag"/>
+                <button type="submit" class="btn btn-primary ml-2">Search by tag</button>
+            </form>
+        </div>
     </div>
 
-    <div>
-        <form action="/add" method="post">
-            <input type="text" name="text" placeholder="Enter message"/>
-            <input type="text" name="tag" placeholder="Enter tag"/>
-            <input type="hidden" name="_csrf" value="${_csrf.token}"/>
-            <button type="submit">Save</button>
-        </form>
+    <a class="btn btn-success" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+        Add new message
+    </a>
+    <div class="collapse" id="collapseExample">
+        <div class="form-group mt-3">
+            <form action="/add" method="post">
+                <div class="form-group">
+                    <input class="form-control col-md-5" type="text" name="text" placeholder="Enter message"/>
+                </div>
+                <div class="form-group">
+                    <input class="form-control col-md-4" type="text" name="tag" placeholder="Enter tag"/>
+                </div>
+                <input type="hidden" name="_csrf" value="${_csrf.token}"/>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
     </div>
 
-    <div>
-        <form action="/main" method="get">
-            <input type="text" name="filter" value="${filter?ifExists}" placeholder="Filter tag"/>
-            <button type="submit">Search by tag</button>
-        </form>
-    </div>
-
-    <div>Message list:</div>
-    <div>
+    <div class="card-columns">
         <#list messages as message>
-            <div>
-                <b>${message.id}</b>
-                <span>${message.text}</span>
-                <i>${message.tag}</i>
-                <strong>${(message.author.username)!"&lt;none&gt;"}</strong>
+            <div class="card my-3">
+                <div class="m-2">
+                    <span>${message.text}</span>
+                    <i>${message.tag}</i>
+                </div>
+                <div class="card-footer text-muted">
+                    ${(message.author.username)!"&lt;none&gt;"}
+                </div>
             </div>
         <#else>
             No messages(
