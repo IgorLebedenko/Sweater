@@ -19,6 +19,9 @@ public class UserService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private MailSender mailSender;
+
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -38,8 +41,20 @@ public class UserService implements UserDetailsService {
 
         user.setActive(true);
         user.setRoles(Collections.singleton(Role.USER));
+        user.setActivationCode(UUID.randomUUID().toString());
 
         userRepository.save(user);
+
+        if (!StringUtils.isEmpty(user.getEmail())) {
+            String message = String.format(
+                    "Hello, %s! Welcome to Sweater. Please visit next link: %sactivate/%s " +
+                            "to activate your account.",
+                    user.getUsername(),
+                    "http://localhost:8080/",
+                    user.getActivationCode()
+            );
+            mailSender.send(user.getEmail(), "Activation code", message);
+        }
 
         return true;
     }
@@ -62,5 +77,19 @@ public class UserService implements UserDetailsService {
                 .forEach(k -> user.getRoles().add(Role.valueOf(k)));
 
         userRepository.save(user);
+    }
+
+    public boolean activateUser(String code) {
+        User user = userRepository.findByActivationCode(code);
+
+        if (user == null) {
+            return false;
+        }
+
+        user.setActivationCode(null);
+
+        userRepository.save(user);
+
+        return true;
     }
 }
