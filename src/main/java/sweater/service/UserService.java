@@ -45,6 +45,12 @@ public class UserService implements UserDetailsService {
 
         userRepository.save(user);
 
+        sendMessage(user);
+
+        return true;
+    }
+
+    private void sendMessage(User user) {
         if (!StringUtils.isEmpty(user.getEmail())) {
             String message = String.format(
                     "Hello, %s! Welcome to Sweater. Please visit next link: %sactivate/%s " +
@@ -55,8 +61,6 @@ public class UserService implements UserDetailsService {
             );
             mailSender.send(user.getEmail(), "Activation code", message);
         }
-
-        return true;
     }
 
     public void saveUser(User user, Map<String, String> formParams) {
@@ -91,5 +95,29 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
 
         return true;
+    }
+
+    public void updateUser(User user, String password, String email) {
+        String userEmail = user.getEmail();
+
+        boolean isEmailChanged = (email != null && !email.equals(userEmail));
+
+        if (isEmailChanged) {
+            user.setEmail(email);
+
+            if (!StringUtils.isEmpty(email)) {
+                user.setActivationCode(UUID.randomUUID().toString());
+            }
+        }
+
+        if (!StringUtils.isEmpty(password)) {
+            user.setPassword(password);
+        }
+
+        userRepository.save(user);
+
+        if (isEmailChanged) {
+            sendMessage(user);
+        }
     }
 }

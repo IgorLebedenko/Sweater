@@ -20,6 +20,11 @@
                     <a class="nav-link" href="/users">Users</a>
                 </li>
             </#if>
+            <#if user??>
+                <li class="nav-item">
+                    <a class="nav-link" href="/users/profile">Profile</a>
+                </li>
+            </#if>
         </ul>
 
         <#if known>
