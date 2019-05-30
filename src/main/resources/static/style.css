@@ -1,0 +1,14 @@
+.table {
+    max-width: 700px;
+    margin: auto;
+    text-align: center;
+}
+
+.deleteColumn {
+    max-width: 22px;
+}
+
+.tableCell {
+    display:inline-block;
+    vertical-align: middle;
+}

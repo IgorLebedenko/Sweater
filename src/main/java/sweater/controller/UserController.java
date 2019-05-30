@@ -19,6 +19,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping
     public String userList(Model model) {
@@ -28,7 +29,7 @@ public class UserController {
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @GetMapping("{user}")
+    @GetMapping("/edit/{user}")
     public String editUser(@PathVariable User user,
                            Model model) {
         model.addAttribute("user", user);
@@ -42,6 +43,14 @@ public class UserController {
     public String saveUser(@RequestParam("userId") User user,
                            @RequestParam Map<String, String> formParams) {
         userService.saveUser(user, formParams);
+
+        return "redirect:/users";
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @PostMapping("/delete/{userId}")
+    public String deleteUser(@PathVariable Long userId) {
+        userService.deleteUser(userId);
 
         return "redirect:/users";
     }

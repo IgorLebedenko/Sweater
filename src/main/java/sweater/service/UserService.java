@@ -28,7 +28,7 @@ public class UserService implements UserDetailsService {
 
 
     public List<User> getAllUsers() {
-        return userRepository.findAll();
+        return userRepository.findAllByOrderById();
     }
 
     @Override
@@ -130,5 +130,9 @@ public class UserService implements UserDetailsService {
         if (isEmailChanged) {
             sendMessage(user);
         }
+    }
+
+    public void deleteUser(Long userId) {
+        userRepository.deleteById(userId);
     }
 }
